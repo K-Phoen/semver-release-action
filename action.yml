@@ -1,0 +1,23 @@
+name: 'Semver Release'
+description: 'Automatically create Semver compliant tags or releases based on PR labels'
+author: 'Kévin Gomez'
+
+branding:
+  icon: 'tag'
+  color: 'green'
+
+inputs:
+  release_branch:
+    description: 'Branch to tag'
+    required: true
+    default: master
+
+outputs:
+  tag:
+    description: 'The newly created tag'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.release_branch }}
