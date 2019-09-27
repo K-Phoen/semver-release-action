@@ -1,31 +1,25 @@
 package main
 
 import (
-	"flag"
-	"fmt"
 	"os"
+
+	"github.com/K-Phoen/semver-release-action/bumper/event"
+	"github.com/K-Phoen/semver-release-action/bumper/release"
+	"github.com/K-Phoen/semver-release-action/bumper/semver"
+	"github.com/spf13/cobra"
 )
 
+var rootCmd = &cobra.Command{
+	Use: "bumper",
+}
+
 func main() {
-	var currentVersion string
-	var increment string
+	rootCmd.AddCommand(semver.Command())
+	rootCmd.AddCommand(release.Command())
+	rootCmd.AddCommand(event.GuardCommand())
+	rootCmd.AddCommand(event.IncrementCommand())
 
-	flag.StringVar(&currentVersion, "current", "", "Current version")
-	flag.StringVar(&increment, "increment", "patch", "Semver increment (patch, minor or major")
-
-	flag.Parse()
-
-	version, err := parseVersion(currentVersion)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "invalid version: %s\n", currentVersion)
+	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
-
-	inc, err := parseIncrement(increment)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "invalid increment: %s\n", increment)
-		os.Exit(1)
-	}
-
-	fmt.Print(version.bump(inc))
 }

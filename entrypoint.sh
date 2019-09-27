@@ -10,33 +10,10 @@ then
 fi
 
 RELEASE_BRANCH="$1"
-BASE_REF=$(jq -j '.pull_request?.base.ref' $GITHUB_EVENT_PATH)
 
-if [ "$RELEASE_BRANCH" != "$BASE_REF" ]
-then
-    echo "Release branch is '$RELEASE_BRANCH', got '$BASE_REF'. Nothing to do."
-    exit 0
-fi
+/bumper guard "$RELEASE_BRANCH" "$GITHUB_EVENT_PATH"
 
-if ! jq -e '.pull_request?.merged' $GITHUB_EVENT_PATH >/dev/null
-then
-    echo "Pull request closed, but not merged. Nothing to do."
-    exit 0
-fi
-
-if jq -e '.pull_request?.labels | any(.name == "patch")' $GITHUB_EVENT_PATH >/dev/null
-then
-    INCREMENT="patch"
-elif jq -e '.pull_request?.labels | any(.name == "minor")' $GITHUB_EVENT_PATH >/dev/null
-then
-    INCREMENT="minor"
-elif jq -e '.pull_request?.labels | any(.name == "major")' $GITHUB_EVENT_PATH >/dev/null
-then
-    INCREMENT="major"
-else
-    echo "No semver label found. Nothing to do."
-    exit 0
-fi
+INCREMENT=$(/bumper increment "$GITHUB_EVENT_PATH")
 
 LATEST_TAG_REF=$(git rev-list --tags --max-count=1)
 
@@ -47,16 +24,8 @@ else
     LATEST_TAG_NAME=$(git describe --tags "$LATEST_TAG_REF")
 fi
 
-NEXT_TAG=$(/bumper -increment $INCREMENT -current "$LATEST_TAG_NAME")
+NEXT_TAG=$(/bumper semver "$LATEST_TAG_NAME" $INCREMENT)
 
-curl --silent "https://api.github.com/repos/$GITHUB_REPOSITORY/releases?access_token=$GITHUB_TOKEN" -d @- <<EOF
-{
-    "tag_name": "$NEXT_TAG",
-    "target_commitish": "$GITHUB_SHA",
-    "name": "$NEXT_TAG",
-    "draft": false,
-    "prerelease": false
-}
-EOF
+/bumper release "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$NEXT_TAG" "$GITHUB_TOKEN"
 
 echo ::set-output name=tag::$LATEST_TAG_NAME

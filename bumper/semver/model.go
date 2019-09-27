@@ -1,4 +1,4 @@
-package main
+package semver
 
 import (
 	"errors"
@@ -9,16 +9,16 @@ import (
 )
 
 var errInvalidVersion = errors.New("invalid version")
-var errInvalidIncrement = errors.New("invalid increment")
+var ErrInvalidIncrement = errors.New("invalid increment")
 
 var semverPattern = regexp.MustCompile(`^v?(\d+)\.(\d+)\.(\d+)$`)
 
-type increment int
+type Increment string
 
 const (
-	incrementPatch increment = iota
-	incrementMinor
-	incrementMajor
+	IncrementPatch Increment = "patch"
+	IncrementMinor Increment = "minor"
+	IncrementMajor Increment = "major"
 )
 
 type version struct {
@@ -27,21 +27,21 @@ type version struct {
 	patch int
 }
 
-func (v version) bump(inc increment) version {
+func (v version) bump(inc Increment) version {
 	switch inc {
-	case incrementPatch:
+	case IncrementPatch:
 		return version{
 			patch: v.patch + 1,
 			minor: v.minor,
 			major: v.major,
 		}
-	case incrementMinor:
+	case IncrementMinor:
 		return version{
 			patch: 0,
 			minor: v.minor + 1,
 			major: v.major,
 		}
-	case incrementMajor:
+	case IncrementMajor:
 		return version{
 			patch: 0,
 			minor: 0,
@@ -84,15 +84,15 @@ func parseVersion(v string) (version, error) {
 	}, nil
 }
 
-func parseIncrement(inc string) (increment, error) {
+func ParseIncrement(inc string) (Increment, error) {
 	switch strings.ToLower(inc) {
 	case "patch":
-		return incrementPatch, nil
+		return IncrementPatch, nil
 	case "minor":
-		return incrementMinor, nil
+		return IncrementMinor, nil
 	case "major":
-		return incrementMajor, nil
+		return IncrementMajor, nil
 	}
 
-	return incrementPatch, errInvalidIncrement
+	return IncrementPatch, ErrInvalidIncrement
 }
