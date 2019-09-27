@@ -10,6 +10,10 @@ func AssertNone(err error, format string, args ...interface{}) {
 		return
 	}
 
+	Fail(format, args...)
+}
+
+func Fail(format string, args ...interface{}) {
 	fmt.Fprintf(os.Stderr, format, args...)
 	os.Exit(1)
 }

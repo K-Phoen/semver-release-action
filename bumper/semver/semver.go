@@ -22,7 +22,7 @@ func execute(cmd *cobra.Command, args []string) {
 	version, err := parseVersion(currentVersion)
 	errors.AssertNone(err, "invalid version: %s\n", currentVersion)
 
-	inc, err := parseIncrement(increment)
+	inc, err := ParseIncrement(increment)
 	errors.AssertNone(err, "invalid increment: %s\n", increment)
 
 	fmt.Print(version.bump(inc))

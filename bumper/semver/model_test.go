@@ -11,26 +11,26 @@ func TestVersionBump(t *testing.T) {
 		name string
 
 		version   version
-		increment increment
+		increment Increment
 
 		expectedVersion string
 	}{
 		{
 			name:            "patch bump",
 			version:         version{major: 1, minor: 2, patch: 3},
-			increment:       incrementPatch,
+			increment:       IncrementPatch,
 			expectedVersion: "v1.2.4",
 		},
 		{
 			name:            "minor bump",
 			version:         version{major: 1, minor: 2, patch: 3},
-			increment:       incrementMinor,
+			increment:       IncrementMinor,
 			expectedVersion: "v1.3.0",
 		},
 		{
 			name:            "major bump",
 			version:         version{major: 1, minor: 2, patch: 3},
-			increment:       incrementMajor,
+			increment:       IncrementMajor,
 			expectedVersion: "v2.0.0",
 		},
 	}
@@ -46,49 +46,49 @@ func TestParseIncrement(t *testing.T) {
 	cases := []struct {
 		input string
 
-		expectedIncrement increment
+		expectedIncrement Increment
 		expectedError     error
 	}{
 		{
 			input:             "patch",
-			expectedIncrement: incrementPatch,
+			expectedIncrement: IncrementPatch,
 			expectedError:     nil,
 		},
 		{
 			input:             "PaTcH",
-			expectedIncrement: incrementPatch,
+			expectedIncrement: IncrementPatch,
 			expectedError:     nil,
 		},
 		{
 			input:             "minor",
-			expectedIncrement: incrementMinor,
+			expectedIncrement: IncrementMinor,
 			expectedError:     nil,
 		},
 		{
 			input:             "mInOr",
-			expectedIncrement: incrementMinor,
+			expectedIncrement: IncrementMinor,
 			expectedError:     nil,
 		},
 		{
 			input:             "major",
-			expectedIncrement: incrementMajor,
+			expectedIncrement: IncrementMajor,
 			expectedError:     nil,
 		},
 		{
 			input:             "mAjOR",
-			expectedIncrement: incrementMajor,
+			expectedIncrement: IncrementMajor,
 			expectedError:     nil,
 		},
 
 		{
 			input:             "micro",
-			expectedIncrement: incrementPatch,
-			expectedError:     errInvalidIncrement,
+			expectedIncrement: IncrementPatch,
+			expectedError:     ErrInvalidIncrement,
 		},
 	}
 
 	for _, testCase := range cases {
-		inc, err := parseIncrement(testCase.input)
+		inc, err := ParseIncrement(testCase.input)
 
 		require.Equal(t, testCase.expectedIncrement, inc)
 		require.Equal(t, testCase.expectedError, err)
