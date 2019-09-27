@@ -49,14 +49,6 @@ fi
 
 NEXT_TAG=$(/bumper semver "$LATEST_TAG_NAME" $INCREMENT)
 
-curl --silent "https://api.github.com/repos/$GITHUB_REPOSITORY/releases?access_token=$GITHUB_TOKEN" -d @- <<EOF
-{
-    "tag_name": "$NEXT_TAG",
-    "target_commitish": "$GITHUB_SHA",
-    "name": "$NEXT_TAG",
-    "draft": false,
-    "prerelease": false
-}
-EOF
+/bumper release "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$NEXT_TAG" "$GITHUB_TOKEN"
 
 echo ::set-output name=tag::$LATEST_TAG_NAME
