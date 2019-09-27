@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-        with:
-          ref: refs/heads/${{ github.head_ref }}
+        #with:
+          #ref: refs/heads/${{ github.head_ref }}
       - name: Tag
         uses: K-Phoen/semver-release-action@master
         with:
