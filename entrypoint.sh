@@ -47,7 +47,7 @@ else
     LATEST_TAG_NAME=$(git describe --tags "$LATEST_TAG_REF")
 fi
 
-NEXT_TAG=$(/bumper -increment $INCREMENT -current "$LATEST_TAG_NAME")
+NEXT_TAG=$(/bumper semver "$LATEST_TAG_NAME" $INCREMENT)
 
 curl --silent "https://api.github.com/repos/$GITHUB_REPOSITORY/releases?access_token=$GITHUB_TOKEN" -d @- <<EOF
 {
