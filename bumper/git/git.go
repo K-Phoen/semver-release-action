@@ -37,7 +37,7 @@ func executeLatestTag(cmd *cobra.Command, args []string) {
 	refs, response, err := client.Git.ListRefs(ctx, owner, repo, &github.ReferenceListOptions{
 		Type: "tag",
 	})
-	if response.StatusCode == http.StatusNotFound {
+	if response != nil && response.StatusCode == http.StatusNotFound {
 		fmt.Print("v0.0.0")
 		return
 	}
