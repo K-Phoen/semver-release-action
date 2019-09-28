@@ -13,18 +13,10 @@ RELEASE_BRANCH="$1"
 
 /bumper guard "$RELEASE_BRANCH" "$GITHUB_EVENT_PATH"
 
+LATEST_TAG=$(/bumper latest-tag "$GITHUB_REPOSITORY" "$GITHUB_TOKEN")
+
 INCREMENT=$(/bumper increment "$GITHUB_EVENT_PATH")
-
-LATEST_TAG_REF=$(git rev-list --tags --max-count=1)
-
-if [ -z "$LATEST_TAG_REF" ]
-then
-    LATEST_TAG_NAME="v0.0.0"
-else
-    LATEST_TAG_NAME=$(git describe --tags "$LATEST_TAG_REF")
-fi
-
-NEXT_TAG=$(/bumper semver "$LATEST_TAG_NAME" $INCREMENT)
+NEXT_TAG=$(/bumper semver "$LATEST_TAG" $INCREMENT)
 
 /bumper release "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$NEXT_TAG" "$GITHUB_TOKEN"
 

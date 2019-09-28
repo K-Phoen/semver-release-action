@@ -9,9 +9,6 @@ RUN go build -o bumper
 # Run
 FROM alpine:3.10
 
-RUN apk add --no-cache --update git \
-    && rm -f /var/cache/apk/*
-
 COPY --from=build /go/src/app/bumper /bumper
 COPY entrypoint.sh /entrypoint.sh
 

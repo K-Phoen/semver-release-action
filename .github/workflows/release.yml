@@ -8,11 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-        with:
-          # can't use GITHUB_REF (which would reference the PR merge branch)
-          # as it might have been deleted already
-          ref: ${{ github.sha }}
       - name: Tag
         uses: K-Phoen/semver-release-action@master
         with:
