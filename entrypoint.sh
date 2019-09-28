@@ -20,4 +20,4 @@ NEXT_TAG=$(/bumper semver "$LATEST_TAG" $INCREMENT)
 
 /bumper release "$GITHUB_REPOSITORY" "$GITHUB_SHA" "$NEXT_TAG" "$GITHUB_TOKEN"
 
-echo ::set-output name=tag::$LATEST_TAG
+echo ::set-output name=tag::$NEXT_TAG
