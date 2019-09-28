@@ -10,11 +10,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
-	Use: "bumper",
-}
-
 func main() {
+	rootCmd := &cobra.Command{
+		Use: "bumper",
+	}
+
 	rootCmd.AddCommand(semver.Command())
 	rootCmd.AddCommand(release.Command())
 	rootCmd.AddCommand(event.GuardCommand())
