@@ -3,6 +3,7 @@ package git
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"strings"
 
 	"github.com/K-Phoen/semver-release-action/bumper/action"
@@ -33,9 +34,13 @@ func executeLatestTag(cmd *cobra.Command, args []string) {
 	owner := parts[0]
 	repo := parts[1]
 
-	refs, _, err := client.Git.ListRefs(ctx, owner, repo, &github.ReferenceListOptions{
+	refs, response, err := client.Git.ListRefs(ctx, owner, repo, &github.ReferenceListOptions{
 		Type: "tag",
 	})
+	if response.StatusCode == http.StatusNotFound {
+		fmt.Print("v0.0.0")
+		return
+	}
 	action.AssertNoError(err, "could not list git refs: %s", err)
 
 	latest := semver.MustParse("0.0.0")
