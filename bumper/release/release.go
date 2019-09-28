@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/K-Phoen/semver-release-action/bumper/errors"
+	"github.com/K-Phoen/semver-release-action/bumper/action"
 	"github.com/google/go-github/v28/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
@@ -40,5 +40,5 @@ func execute(cmd *cobra.Command, args []string) {
 		Draft:           github.Bool(false),
 		Prerelease:      github.Bool(false),
 	})
-	errors.AssertNone(err, "could not create GitHub release: %s", err)
+	action.AssertNoError(err, "could not create GitHub release: %s", err)
 }
