@@ -1,11 +1,11 @@
-package errors
+package action
 
 import (
 	"fmt"
 	"os"
 )
 
-func AssertNone(err error, format string, args ...interface{}) {
+func AssertNoError(err error, format string, args ...interface{}) {
 	if err == nil {
 		return
 	}

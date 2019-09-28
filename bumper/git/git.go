@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/K-Phoen/semver-release-action/bumper/errors"
+	"github.com/K-Phoen/semver-release-action/bumper/action"
 	"github.com/blang/semver"
 	"github.com/google/go-github/github"
 	"github.com/spf13/cobra"
@@ -36,7 +36,7 @@ func executeLatestTag(cmd *cobra.Command, args []string) {
 	refs, _, err := client.Git.ListRefs(ctx, owner, repo, &github.ReferenceListOptions{
 		Type: "tag",
 	})
-	errors.AssertNone(err, "could not list git refs: %s", err)
+	action.AssertNoError(err, "could not list git refs: %s", err)
 
 	latest := semver.MustParse("0.0.0")
 	for _, ref := range refs {

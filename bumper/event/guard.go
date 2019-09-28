@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/K-Phoen/semver-release-action/bumper/errors"
+	"github.com/K-Phoen/semver-release-action/bumper/action"
 	"github.com/K-Phoen/semver-release-action/bumper/semver"
 	"github.com/google/go-github/github"
 	"github.com/spf13/cobra"
@@ -32,51 +32,34 @@ func executeGuard(cmd *cobra.Command, args []string) {
 	event := parseEvent(args[1])
 
 	if event.Action == nil || *event.Action != "closed" {
-		errors.Fail("pull request not closed")
+		action.Skip("pull request not closed")
 	}
 
 	if event.PullRequest.Merged == nil || !*event.PullRequest.Merged {
-		errors.Fail("pull request not merged")
+		action.Skip("pull request not merged")
 	}
 
 	if event.PullRequest.Base == nil || event.PullRequest.Base.Ref == nil {
-		errors.Fail("could not determine pull request base branch")
+		action.Fail("could not determine pull request base branch")
 	}
 
 	if *event.PullRequest.Base.Ref != releaseBranch {
-		errors.Fail("pull request not merged into the release branch (expected '%s', got '%s'", releaseBranch, *event.PullRequest.Base.Ref)
+		action.Skip("pull request not merged into the release branch (expected '%s', got '%s'", releaseBranch, *event.PullRequest.Base.Ref)
 	}
 
-	validLabelFound := false
-	for _, label := range event.PullRequest.Labels {
-		if label.Name == nil {
-			continue
-		}
-
-		_, err := semver.ParseIncrement(*label.Name)
-		if err != nil {
-			continue
-		}
-
-		// we already found one valid label: something is fishy.
-		if validLabelFound {
-			errors.Fail("several valid semver label found")
-		}
-
-		validLabelFound = true
-	}
-
-	if !validLabelFound {
-		errors.Fail("no valid semver label found")
-	}
+	_ = extractIncrement(event.PullRequest)
 }
 
 func executeIncrement(cmd *cobra.Command, args []string) {
 	event := parseEvent(args[0])
 
+	fmt.Print(extractIncrement(event.PullRequest))
+}
+
+func extractIncrement(pr *github.PullRequest) semver.Increment {
 	validLabelFound := false
 	increment := semver.IncrementPatch
-	for _, label := range event.PullRequest.Labels {
+	for _, label := range pr.Labels {
 		if label.Name == nil {
 			continue
 		}
@@ -88,7 +71,7 @@ func executeIncrement(cmd *cobra.Command, args []string) {
 
 		// we already found one valid label: something is fishy.
 		if validLabelFound {
-			errors.Fail("several valid semver label found")
+			action.Fail("several valid semver label found")
 		}
 
 		validLabelFound = true
@@ -96,19 +79,19 @@ func executeIncrement(cmd *cobra.Command, args []string) {
 	}
 
 	if !validLabelFound {
-		errors.Fail("no valid semver label found")
+		action.Skip("no valid semver label found")
 	}
 
-	fmt.Print(increment)
+	return increment
 }
 
 func parseEvent(filePath string) *github.PullRequestEvent {
 	parsed, err := github.ParseWebHook("pull_request", readEvent(filePath))
-	errors.AssertNone(err, "could not parse GitHub event: %s", err)
+	action.AssertNoError(err, "could not parse GitHub event: %s", err)
 
 	event, ok := parsed.(*github.PullRequestEvent)
 	if !ok {
-		errors.Fail("could not parse GitHub event into a PullRequestEvent: %s", err)
+		action.Fail("could not parse GitHub event into a PullRequestEvent: %s", err)
 	}
 
 	return event
@@ -116,11 +99,11 @@ func parseEvent(filePath string) *github.PullRequestEvent {
 
 func readEvent(filePath string) []byte {
 	file, err := os.Open(filePath)
-	errors.AssertNone(err, "could not open GitHub event file: %s", err)
+	action.AssertNoError(err, "could not open GitHub event file: %s", err)
 	defer file.Close()
 
 	b, err := ioutil.ReadAll(file)
-	errors.AssertNone(err, "could not read GitHub event file: %s", err)
+	action.AssertNoError(err, "could not read GitHub event file: %s", err)
 
 	return b
 }
