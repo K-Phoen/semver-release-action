@@ -11,6 +11,15 @@ then this action can create a tag and a GitHub release when it is merged.
 
 **Required** Branch to tag. Default `"master"`.
 
+### `release_strategy`
+
+**Required** Release strategy. Default `"release"` (`release`, `none`).
+
+### `tag`
+
+**Optional** Tag to use. If left undefined, it will be computed using the tags
+already present in the repository.
+
 ## Outputs
 
 ### `tag`
