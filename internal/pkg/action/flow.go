@@ -1,11 +1,12 @@
 package action
 
 import (
-	"fmt"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
-func Skip(format string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, format, args...)
+func Skip(cmd *cobra.Command, format string, args ...interface{}) {
+	cmd.PrintErrf(format, args...)
 	os.Exit(0)
 }

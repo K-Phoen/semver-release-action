@@ -40,5 +40,5 @@ func execute(cmd *cobra.Command, args []string) {
 		Draft:           github.Bool(false),
 		Prerelease:      github.Bool(false),
 	})
-	action.AssertNoError(err, "could not create GitHub release: %s", err)
+	action.AssertNoError(cmd, err, "could not create GitHub release: %s", err)
 }

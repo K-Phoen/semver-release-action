@@ -40,7 +40,7 @@ func executeLatestTag(cmd *cobra.Command, args []string) {
 		cmd.Print("v0.0.0")
 		return
 	}
-	action.AssertNoError(err, "could not list git refs: %s", err)
+	action.AssertNoError(cmd, err, "could not list git refs: %s", err)
 
 	latest := semver.MustParse("0.0.0")
 	for _, ref := range refs {

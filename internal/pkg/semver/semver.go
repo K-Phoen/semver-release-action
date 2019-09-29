@@ -18,10 +18,10 @@ func execute(cmd *cobra.Command, args []string) {
 	increment := args[1]
 
 	version, err := ParseVersion(currentVersion)
-	action.AssertNoError(err, "invalid Version: %s\n", currentVersion)
+	action.AssertNoError(cmd, err, "invalid Version: %s\n", currentVersion)
 
 	inc, err := ParseIncrement(increment)
-	action.AssertNoError(err, "invalid increment: %s\n", increment)
+	action.AssertNoError(cmd, err, "invalid increment: %s\n", increment)
 
 	cmd.Print(version.bump(inc))
 }
