@@ -10,15 +10,38 @@ import (
 	"golang.org/x/oauth2"
 )
 
+const releaseTypeNone = "none"
+const releaseTypeRelease = "release"
+
 func Command() *cobra.Command {
-	return &cobra.Command{
+	var releaseType string
+
+	cmd := &cobra.Command{
 		Use:  "release [REPOSITORY] [TARGET_COMMITISH] [VERSION] [GH_TOKEN]",
 		Args: cobra.ExactArgs(4),
-		Run:  execute,
+		Run: func(cmd *cobra.Command, args []string) {
+			execute(cmd, releaseType, args)
+		},
+	}
+
+	cmd.Flags().StringVarP(&releaseType, "strategy", "s", releaseTypeRelease, "Release strategy")
+
+	return cmd
+}
+
+func execute(cmd *cobra.Command, releaseType string, args []string) {
+	switch releaseType {
+	case releaseTypeNone:
+		return
+	case releaseTypeRelease:
+		createGithubRelease(cmd, args)
+		return
+	default:
+		action.Fail(cmd, "unknown release strategy: %s", releaseType)
 	}
 }
 
-func execute(cmd *cobra.Command, args []string) {
+func createGithubRelease(cmd *cobra.Command, args []string) {
 	repository := args[0]
 	targetCommitish := args[1]
 	version := args[2]

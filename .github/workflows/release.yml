@@ -8,9 +8,42 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Tag
+      - name: Compute next SemVer tag
+        id: semver
         uses: K-Phoen/semver-release-action@master
         with:
           release_branch: master
+          release_strategy: none
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.base_ref }}
+
+      - run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u kphoen --password-stdin
+
+      - name: Push docker image
+        run: make push
+        env:
+          VERSION: ${{ steps.semver.outputs.tag }}
+
+      - run: make update_action
+        env:
+          VERSION: ${{ steps.semver.outputs.tag }}
+
+      - uses: stefanzweifel/git-auto-commit-action@v2.1.0
+        with:
+          commit_message: Release ${{ steps.semver.outputs.tag }}
+          branch: ${{ github.base_ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create release
+        id: tag
+        uses: K-Phoen/semver-release-action@master
+        with:
+          release_branch: master
+          tag: ${{ steps.semver.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
