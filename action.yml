@@ -18,7 +18,7 @@ inputs:
     default: release
 
   tag:
-    description: 'Tag'
+    description: 'Tag to use'
     required: false
 
 outputs:
@@ -27,7 +27,7 @@ outputs:
 
 runs:
   using: 'docker'
-  image: 'docker://kphoen/semver-release-action:v1.1.1'
+  image: 'docker://kphoen/semver-release-action:v1.1.2'
   args:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
