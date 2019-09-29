@@ -46,16 +46,24 @@ func executeGuard(cmd *cobra.Command, args []string) {
 		action.Skip("pull request not merged into the release branch (expected '%s', got '%s'", releaseBranch, *event.PullRequest.Base.Ref)
 	}
 
-	_ = extractIncrement(event.PullRequest)
+	_, incrementFound := extractIncrement(event.PullRequest)
+	if !incrementFound {
+		action.Skip("no valid semver label found")
+	}
 }
 
 func executeIncrement(cmd *cobra.Command, args []string) {
 	event := parseEvent(args[0])
 
-	cmd.Print(extractIncrement(event.PullRequest))
+	increment, found := extractIncrement(event.PullRequest)
+	if !found {
+		action.Fail("no valid semver label found")
+	}
+
+	cmd.Print(increment)
 }
 
-func extractIncrement(pr *github.PullRequest) semver.Increment {
+func extractIncrement(pr *github.PullRequest) (semver.Increment, bool) {
 	validLabelFound := false
 	increment := semver.IncrementPatch
 	for _, label := range pr.Labels {
@@ -77,11 +85,7 @@ func extractIncrement(pr *github.PullRequest) semver.Increment {
 		increment = inc
 	}
 
-	if !validLabelFound {
-		action.Skip("no valid semver label found")
-	}
-
-	return increment
+	return increment, validLabelFound
 }
 
 func parseEvent(filePath string) *github.PullRequestEvent {

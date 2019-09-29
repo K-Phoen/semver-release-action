@@ -14,6 +14,7 @@ func main() {
 	rootCmd := &cobra.Command{
 		Use: "bumper",
 	}
+	rootCmd.SetOut(os.Stdout)
 
 	rootCmd.AddCommand(semver.Command())
 	rootCmd.AddCommand(release.Command())
