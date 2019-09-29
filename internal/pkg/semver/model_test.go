@@ -10,26 +10,26 @@ func TestVersionBump(t *testing.T) {
 	cases := []struct {
 		name string
 
-		version   version
+		version   Version
 		increment Increment
 
 		expectedVersion string
 	}{
 		{
 			name:            "patch bump",
-			version:         version{major: 1, minor: 2, patch: 3},
+			version:         Version{major: 1, minor: 2, patch: 3},
 			increment:       IncrementPatch,
 			expectedVersion: "v1.2.4",
 		},
 		{
 			name:            "minor bump",
-			version:         version{major: 1, minor: 2, patch: 3},
+			version:         Version{major: 1, minor: 2, patch: 3},
 			increment:       IncrementMinor,
 			expectedVersion: "v1.3.0",
 		},
 		{
 			name:            "major bump",
-			version:         version{major: 1, minor: 2, patch: 3},
+			version:         Version{major: 1, minor: 2, patch: 3},
 			increment:       IncrementMajor,
 			expectedVersion: "v2.0.0",
 		},
@@ -99,46 +99,49 @@ func TestParseVersion(t *testing.T) {
 	cases := []struct {
 		input string
 
-		expectedVersion version
-		expectedError   error
+		expectedVersion Version
+		expectError     bool
 	}{
 		{
 			input:           "1.2.3",
-			expectedVersion: version{major: 1, minor: 2, patch: 3},
-			expectedError:   nil,
+			expectedVersion: Version{major: 1, minor: 2, patch: 3},
+			expectError:     false,
 		},
 		{
 			input:           "v1.2.3",
-			expectedVersion: version{major: 1, minor: 2, patch: 3},
-			expectedError:   nil,
+			expectedVersion: Version{major: 1, minor: 2, patch: 3},
+			expectError:     false,
 		},
 		{
-			// could be improved... or I should probably just re-use a lib that already properly handles semver.
 			input:           "v1.2",
-			expectedVersion: version{},
-			expectedError:   errInvalidVersion,
+			expectedVersion: Version{major: 1, minor: 2, patch: 0},
+			expectError:     false,
 		},
 		{
 			input:           "vlala.2.3",
-			expectedVersion: version{},
-			expectedError:   errInvalidVersion,
+			expectedVersion: Version{},
+			expectError:     true,
 		},
 		{
 			input:           "v1.lala.3",
-			expectedVersion: version{},
-			expectedError:   errInvalidVersion,
+			expectedVersion: Version{},
+			expectError:     true,
 		},
 		{
 			input:           "v1.2.lala",
-			expectedVersion: version{},
-			expectedError:   errInvalidVersion,
+			expectedVersion: Version{},
+			expectError:     true,
 		},
 	}
 
 	for _, testCase := range cases {
-		ver, err := parseVersion(testCase.input)
+		ver, err := ParseVersion(testCase.input)
 
 		require.Equal(t, testCase.expectedVersion, ver)
-		require.Equal(t, testCase.expectedError, err)
+		if testCase.expectError {
+			require.Error(t, err)
+		} else {
+			require.NoError(t, err)
+		}
 	}
 }

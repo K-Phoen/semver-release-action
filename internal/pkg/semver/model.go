@@ -3,15 +3,12 @@ package semver
 import (
 	"errors"
 	"fmt"
-	"regexp"
-	"strconv"
 	"strings"
+
+	version "github.com/blang/semver"
 )
 
-var errInvalidVersion = errors.New("invalid version")
 var ErrInvalidIncrement = errors.New("invalid increment")
-
-var semverPattern = regexp.MustCompile(`^v?(\d+)\.(\d+)\.(\d+)$`)
 
 type Increment string
 
@@ -21,28 +18,28 @@ const (
 	IncrementMajor Increment = "major"
 )
 
-type version struct {
-	major int
-	minor int
-	patch int
+type Version struct {
+	major uint64
+	minor uint64
+	patch uint64
 }
 
-func (v version) bump(inc Increment) version {
+func (v Version) bump(inc Increment) Version {
 	switch inc {
 	case IncrementPatch:
-		return version{
+		return Version{
 			patch: v.patch + 1,
 			minor: v.minor,
 			major: v.major,
 		}
 	case IncrementMinor:
-		return version{
+		return Version{
 			patch: 0,
 			minor: v.minor + 1,
 			major: v.major,
 		}
 	case IncrementMajor:
-		return version{
+		return Version{
 			patch: 0,
 			minor: 0,
 			major: v.major + 1,
@@ -52,35 +49,20 @@ func (v version) bump(inc Increment) version {
 	return v
 }
 
-func (v version) String() string {
+func (v Version) String() string {
 	return fmt.Sprintf("v%d.%d.%d", v.major, v.minor, v.patch)
 }
 
-func parseVersion(v string) (version, error) {
-	parts := semverPattern.FindStringSubmatch(v)
-	if len(parts) != 4 {
-		return version{}, errInvalidVersion
-	}
-
-	major, err := strconv.Atoi(parts[1])
+func ParseVersion(input string) (Version, error) {
+	v, err := version.ParseTolerant(input)
 	if err != nil {
-		return version{}, errInvalidVersion
+		return Version{}, err
 	}
 
-	minor, err := strconv.Atoi(parts[2])
-	if err != nil {
-		return version{}, errInvalidVersion
-	}
-
-	patch, err := strconv.Atoi(parts[3])
-	if err != nil {
-		return version{}, errInvalidVersion
-	}
-
-	return version{
-		major: major,
-		minor: minor,
-		patch: patch,
+	return Version{
+		major: v.Major,
+		minor: v.Minor,
+		patch: v.Patch,
 	}, nil
 }
 

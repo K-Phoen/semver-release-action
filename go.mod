@@ -1,4 +1,4 @@
-module github.com/K-Phoen/semver-release-action/bumper
+module github.com/K-Phoen/semver-release-action
 
 go 1.13
 

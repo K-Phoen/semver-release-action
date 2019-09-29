@@ -1,9 +1,7 @@
 package semver
 
 import (
-	"fmt"
-
-	"github.com/K-Phoen/semver-release-action/bumper/action"
+	"github.com/K-Phoen/semver-release-action/internal/pkg/action"
 	"github.com/spf13/cobra"
 )
 
@@ -19,11 +17,11 @@ func execute(cmd *cobra.Command, args []string) {
 	currentVersion := args[0]
 	increment := args[1]
 
-	version, err := parseVersion(currentVersion)
-	action.AssertNoError(err, "invalid version: %s\n", currentVersion)
+	version, err := ParseVersion(currentVersion)
+	action.AssertNoError(err, "invalid Version: %s\n", currentVersion)
 
 	inc, err := ParseIncrement(increment)
 	action.AssertNoError(err, "invalid increment: %s\n", increment)
 
-	fmt.Print(version.bump(inc))
+	cmd.Print(version.bump(inc))
 }

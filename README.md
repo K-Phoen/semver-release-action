@@ -2,6 +2,9 @@
 
 Automatically create Semver compliant releases based on PR labels.
 
+Assuming that a PR is tagged with a "*semver-compliant*" label (*patch*, *minor* or *major*),
+then this action can create a tag and a GitHub release when it is merged.
+
 ## Inputs
 
 ### `release_branch`

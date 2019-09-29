@@ -3,18 +3,18 @@ package main
 import (
 	"os"
 
-	"github.com/K-Phoen/semver-release-action/bumper/event"
-	"github.com/K-Phoen/semver-release-action/bumper/git"
-	"github.com/K-Phoen/semver-release-action/bumper/release"
-	"github.com/K-Phoen/semver-release-action/bumper/semver"
+	"github.com/K-Phoen/semver-release-action/internal/pkg/event"
+	"github.com/K-Phoen/semver-release-action/internal/pkg/git"
+	"github.com/K-Phoen/semver-release-action/internal/pkg/release"
+	"github.com/K-Phoen/semver-release-action/internal/pkg/semver"
 	"github.com/spf13/cobra"
 )
 
-var rootCmd = &cobra.Command{
-	Use: "bumper",
-}
-
 func main() {
+	rootCmd := &cobra.Command{
+		Use: "bumper",
+	}
+
 	rootCmd.AddCommand(semver.Command())
 	rootCmd.AddCommand(release.Command())
 	rootCmd.AddCommand(event.GuardCommand())
