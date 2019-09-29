@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/action"
+	"github.com/K-Phoen/semver-release-action/internal/pkg/action"
 	"github.com/google/go-github/v28/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"

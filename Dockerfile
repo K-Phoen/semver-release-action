@@ -2,7 +2,7 @@
 FROM golang:1.13-alpine AS build
 
 WORKDIR /go/src/app
-ADD ./bumper /go/src/app
+ADD ./ /go/src/app
 
 RUN go build -o bumper
 
