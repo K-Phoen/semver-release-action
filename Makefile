@@ -26,7 +26,7 @@ push: image
 
 .PHONY: update_action
 update_action:
-	sed "s/\*\*VERSION_PLACEHOLDER\*\*/$VERSION/" action.yml.dist > action.yml
+	sed "s/\*\*VERSION_PLACEHOLDER\*\*/$(VERSION)/" action.yml.dist > action.yml
 
 .PHONY: clean
 clean:
