@@ -3,6 +3,8 @@ package semver
 import (
 	"testing"
 
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -10,27 +12,27 @@ func TestVersionBump(t *testing.T) {
 	cases := []struct {
 		name string
 
-		version   Version
-		increment Increment
+		version   pkg.Version
+		increment pkg.Increment
 
 		expectedVersion string
 	}{
 		{
 			name:            "patch bump",
-			version:         Version{major: 1, minor: 2, patch: 3},
-			increment:       IncrementPatch,
+			version:         pkg.Version{major: 1, minor: 2, patch: 3},
+			increment:       pkg.IncrementPatch,
 			expectedVersion: "v1.2.4",
 		},
 		{
 			name:            "minor bump",
-			version:         Version{major: 1, minor: 2, patch: 3},
-			increment:       IncrementMinor,
+			version:         pkg.Version{major: 1, minor: 2, patch: 3},
+			increment:       pkg.IncrementMinor,
 			expectedVersion: "v1.3.0",
 		},
 		{
 			name:            "major bump",
-			version:         Version{major: 1, minor: 2, patch: 3},
-			increment:       IncrementMajor,
+			version:         pkg.Version{major: 1, minor: 2, patch: 3},
+			increment:       pkg.IncrementMajor,
 			expectedVersion: "v2.0.0",
 		},
 	}
@@ -46,49 +48,49 @@ func TestParseIncrement(t *testing.T) {
 	cases := []struct {
 		input string
 
-		expectedIncrement Increment
+		expectedIncrement pkg.Increment
 		expectedError     error
 	}{
 		{
 			input:             "patch",
-			expectedIncrement: IncrementPatch,
+			expectedIncrement: pkg.IncrementPatch,
 			expectedError:     nil,
 		},
 		{
 			input:             "PaTcH",
-			expectedIncrement: IncrementPatch,
+			expectedIncrement: pkg.IncrementPatch,
 			expectedError:     nil,
 		},
 		{
 			input:             "minor",
-			expectedIncrement: IncrementMinor,
+			expectedIncrement: pkg.IncrementMinor,
 			expectedError:     nil,
 		},
 		{
 			input:             "mInOr",
-			expectedIncrement: IncrementMinor,
+			expectedIncrement: pkg.IncrementMinor,
 			expectedError:     nil,
 		},
 		{
 			input:             "major",
-			expectedIncrement: IncrementMajor,
+			expectedIncrement: pkg.IncrementMajor,
 			expectedError:     nil,
 		},
 		{
 			input:             "mAjOR",
-			expectedIncrement: IncrementMajor,
+			expectedIncrement: pkg.IncrementMajor,
 			expectedError:     nil,
 		},
 
 		{
 			input:             "micro",
-			expectedIncrement: IncrementPatch,
-			expectedError:     ErrInvalidIncrement,
+			expectedIncrement: pkg.IncrementPatch,
+			expectedError:     pkg.ErrInvalidIncrement,
 		},
 	}
 
 	for _, testCase := range cases {
-		inc, err := ParseIncrement(testCase.input)
+		inc, err := pkg.ParseIncrement(testCase.input)
 
 		require.Equal(t, testCase.expectedIncrement, inc)
 		require.Equal(t, testCase.expectedError, err)
@@ -99,43 +101,43 @@ func TestParseVersion(t *testing.T) {
 	cases := []struct {
 		input string
 
-		expectedVersion Version
+		expectedVersion pkg.Version
 		expectError     bool
 	}{
 		{
 			input:           "1.2.3",
-			expectedVersion: Version{major: 1, minor: 2, patch: 3},
+			expectedVersion: pkg.Version{major: 1, minor: 2, patch: 3},
 			expectError:     false,
 		},
 		{
 			input:           "v1.2.3",
-			expectedVersion: Version{major: 1, minor: 2, patch: 3},
+			expectedVersion: pkg.Version{major: 1, minor: 2, patch: 3},
 			expectError:     false,
 		},
 		{
 			input:           "v1.2",
-			expectedVersion: Version{major: 1, minor: 2, patch: 0},
+			expectedVersion: pkg.Version{major: 1, minor: 2, patch: 0},
 			expectError:     false,
 		},
 		{
 			input:           "vlala.2.3",
-			expectedVersion: Version{},
+			expectedVersion: pkg.Version{},
 			expectError:     true,
 		},
 		{
 			input:           "v1.lala.3",
-			expectedVersion: Version{},
+			expectedVersion: pkg.Version{},
 			expectError:     true,
 		},
 		{
 			input:           "v1.2.lala",
-			expectedVersion: Version{},
+			expectedVersion: pkg.Version{},
 			expectError:     true,
 		},
 	}
 
 	for _, testCase := range cases {
-		ver, err := ParseVersion(testCase.input)
+		ver, err := pkg.ParseVersion(testCase.input)
 
 		require.Equal(t, testCase.expectedVersion, ver)
 		if testCase.expectError {

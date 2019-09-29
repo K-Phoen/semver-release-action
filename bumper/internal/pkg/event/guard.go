@@ -1,12 +1,12 @@
 package event
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 
-	"github.com/K-Phoen/semver-release-action/bumper/action"
-	"github.com/K-Phoen/semver-release-action/bumper/semver"
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/semver"
+
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/action"
 	"github.com/google/go-github/github"
 	"github.com/spf13/cobra"
 )
@@ -53,7 +53,7 @@ func executeGuard(cmd *cobra.Command, args []string) {
 func executeIncrement(cmd *cobra.Command, args []string) {
 	event := parseEvent(args[0])
 
-	fmt.Print(extractIncrement(event.PullRequest))
+	cmd.Print(extractIncrement(event.PullRequest))
 }
 
 func extractIncrement(pr *github.PullRequest) semver.Increment {

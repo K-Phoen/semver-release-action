@@ -2,11 +2,10 @@ package git
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strings"
 
-	"github.com/K-Phoen/semver-release-action/bumper/action"
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/action"
 	"github.com/blang/semver"
 	"github.com/google/go-github/github"
 	"github.com/spf13/cobra"
@@ -38,7 +37,7 @@ func executeLatestTag(cmd *cobra.Command, args []string) {
 		Type: "tag",
 	})
 	if response != nil && response.StatusCode == http.StatusNotFound {
-		fmt.Print("v0.0.0")
+		cmd.Print("v0.0.0")
 		return
 	}
 	action.AssertNoError(err, "could not list git refs: %s", err)
@@ -55,5 +54,5 @@ func executeLatestTag(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	fmt.Printf("v%s", latest)
+	cmd.Printf("v%s", latest)
 }

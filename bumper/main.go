@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"github.com/K-Phoen/semver-release-action/bumper/event"
-	"github.com/K-Phoen/semver-release-action/bumper/git"
-	"github.com/K-Phoen/semver-release-action/bumper/release"
-	"github.com/K-Phoen/semver-release-action/bumper/semver"
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/event"
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/git"
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/release"
+	"github.com/K-Phoen/semver-release-action/bumper/internal/pkg/semver"
 	"github.com/spf13/cobra"
 )
 
