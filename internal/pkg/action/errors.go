@@ -1,19 +1,20 @@
 package action
 
 import (
-	"fmt"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
-func AssertNoError(err error, format string, args ...interface{}) {
+func AssertNoError(cmd *cobra.Command, err error, format string, args ...interface{}) {
 	if err == nil {
 		return
 	}
 
-	Fail(format, args...)
+	Fail(cmd, format, args...)
 }
 
-func Fail(format string, args ...interface{}) {
-	fmt.Fprintf(os.Stderr, format, args...)
+func Fail(cmd *cobra.Command, format string, args ...interface{}) {
+	cmd.PrintErrf(format, args...)
 	os.Exit(1)
 }
