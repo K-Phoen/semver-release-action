@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Tag
-        uses: K-Phoen/semver-tag-action@master
+        uses: K-Phoen/semver-release-action@master
         with:
           release_branch: master
         env:
