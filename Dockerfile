@@ -1,15 +1,18 @@
 # Build
 FROM golang:1.13-alpine AS build
 
+RUN apk add --no-cache --update make \
+    && rm -f /var/cache/apk/*
+
 WORKDIR /go/src/app
 ADD ./ /go/src/app
 
-RUN go build -o bumper
+RUN make build
 
 # Run
 FROM alpine:3.10
 
-COPY --from=build /go/src/app/bumper /bumper
 COPY entrypoint.sh /entrypoint.sh
+COPY --from=build /go/src/app/bumper /bumper
 
 ENTRYPOINT ["/entrypoint.sh"]

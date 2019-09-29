@@ -27,7 +27,7 @@ outputs:
 
 runs:
   using: 'docker'
-  image: 'docker://kphoen/semver-release-action:v1.3.4'
+  image: 'docker://kphoen/semver-release-action:**VERSION_PLACEHOLDER**'
   args:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
