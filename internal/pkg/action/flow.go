@@ -8,5 +8,5 @@ import (
 
 func Skip(cmd *cobra.Command, format string, args ...interface{}) {
 	cmd.PrintErrf(format, args...)
-	os.Exit(0)
+	os.Exit(78)
 }
