@@ -43,7 +43,12 @@ func executeGuard(cmd *cobra.Command, args []string) {
 	}
 
 	if *event.PullRequest.Base.Ref != releaseBranch {
-		action.Skip(cmd, "pull request not merged into the release branch (expected '%s', got '%s'", releaseBranch, *event.PullRequest.Base.Ref)
+		action.Skip(
+			cmd,
+			"pull request not merged into the release branch (expected '%s', got '%s'",
+			releaseBranch,
+			*event.PullRequest.Base.Ref,
+		)
 	}
 
 	_, incrementFound := extractIncrement(cmd, event.PullRequest)
