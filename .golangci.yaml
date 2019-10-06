@@ -32,7 +32,6 @@ linters:
     - gosec
     - golint
     - gochecknoglobals
-  disable:
     - lll # hard to fulfill
 
 run:
