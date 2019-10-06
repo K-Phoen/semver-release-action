@@ -48,3 +48,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 ```
+
+## License
+
+This library is under the [MIT](LICENSE.md) license.
