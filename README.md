@@ -1,4 +1,4 @@
-# Semver Release Github Action
+# Semver Release Github Action ![](https://github.com/K-Phoen/semver-release-action/workflows/CI/badge.svg)
 
 Automatically create Semver compliant releases based on PR labels.
 
