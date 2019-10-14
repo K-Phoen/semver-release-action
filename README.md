@@ -1,9 +1,14 @@
 # Semver Release Github Action ![](https://github.com/K-Phoen/semver-release-action/workflows/CI/badge.svg)
 
-Automatically create Semver compliant releases based on PR labels.
+Automatically create [SemVer](https://semver.org/) compliant releases based on
+PR labels.
 
 Assuming that a PR is tagged with a "*semver-compliant*" label (*patch*, *minor* or *major*),
 then this action can create a tag and a GitHub release when it is merged.
+
+**Note:** to determine the base tag for the increment, this action will try to
+find the most recent tag complying to [SemVer](https://semver.org/). No
+additional setup is required.
 
 ## Inputs
 
@@ -13,7 +18,9 @@ then this action can create a tag and a GitHub release when it is merged.
 
 ### `release_strategy`
 
-**Required** Release strategy. Default `"release"` (`release`, `none`).
+**Required** Release strategy. Default `"release"` (`release`: creates a GitHub
+release ; `none`: computes the next [SemVer](https://semver.org/) version but
+does not create a release or tag).
 
 ### `tag`
 
