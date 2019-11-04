@@ -19,8 +19,8 @@ additional setup is required.
 ### `release_strategy`
 
 **Required** Release strategy. Default `"release"` (`release`: creates a GitHub
-release ; `none`: computes the next [SemVer](https://semver.org/) version but
-does not create a release or tag).
+release ; `tag`: creates a lightweight tag ; `none`: computes the next
+[SemVer](https://semver.org/) version but does not create a release or tag).
 
 ### `tag`
 
