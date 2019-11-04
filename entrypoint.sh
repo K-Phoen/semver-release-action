@@ -16,6 +16,11 @@ NEXT_TAG="$3"
 
 echo ::Executing bumper guard ::debug release_branch=${RELEASE_BRANCH},github_event_path=${GITHUB_EVENT_PATH}
 /bumper guard "${RELEASE_BRANCH}" "${GITHUB_EVENT_PATH}"
+if [ $? -eq 78 ]
+then
+    echo ::debug ::Guard returned a neutral code, stopping the execution.
+    exit 0
+fi
 
 if [ -z "${NEXT_TAG}" ]
 then
