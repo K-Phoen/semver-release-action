@@ -21,6 +21,10 @@ inputs:
     description: 'Tag to use'
     required: false
 
+  default_version:
+    description: 'Which version to use when there are no labels'
+    required: false
+
 outputs:
   tag:
     description: 'The newly created tag'
@@ -32,3 +36,4 @@ runs:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
     - ${{ inputs.tag }}
+    - ${{ inputs.default_version }}

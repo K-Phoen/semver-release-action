@@ -12,16 +12,16 @@ import (
 
 func GuardCommand() *cobra.Command {
 	return &cobra.Command{
-		Use:  "guard [RELEASE_BRANCH] [GH_EVENT_PATH]",
-		Args: cobra.ExactArgs(2),
+		Use:  "guard [RELEASE_BRANCH] [GH_EVENT_PATH] [DEFAULT_VERSION]",
+		Args: cobra.ExactArgs(3),
 		Run:  executeGuard,
 	}
 }
 
 func IncrementCommand() *cobra.Command {
 	return &cobra.Command{
-		Use:  "increment [GH_EVENT_PATH]",
-		Args: cobra.ExactArgs(1),
+		Use:  "increment [GH_EVENT_PATH] [DEFAULT_VERSION]",
+		Args: cobra.ExactArgs(2),
 		Run:  executeIncrement,
 	}
 }
@@ -29,6 +29,7 @@ func IncrementCommand() *cobra.Command {
 func executeGuard(cmd *cobra.Command, args []string) {
 	releaseBranch := args[0]
 	event := parseEvent(cmd, args[1])
+	defaultVersion := args[2]
 
 	if event.Action == nil || *event.Action != "closed" {
 		action.Skip(cmd, "pull request not closed")
@@ -52,17 +53,22 @@ func executeGuard(cmd *cobra.Command, args []string) {
 	}
 
 	_, incrementFound := extractIncrement(cmd, event.PullRequest)
-	if !incrementFound {
-		action.Skip(cmd, "no valid semver label found")
+	if !incrementFound && defaultVersion == "" {
+		action.Skip(cmd, "no valid semver label found or no default version added")
 	}
 }
 
 func executeIncrement(cmd *cobra.Command, args []string) {
 	event := parseEvent(cmd, args[0])
+	defaultVersion := args[1]
 
 	increment, found := extractIncrement(cmd, event.PullRequest)
 	if !found {
-		action.Fail(cmd, "no valid semver label found")
+		if defaultVersion == "" {
+			action.Fail(cmd, "no valid semver label found")
+		} else {
+			increment, _ = semver.ParseIncrement(defaultVersion)
+		}
 	}
 
 	cmd.Print(increment)
