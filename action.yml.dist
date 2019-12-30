@@ -17,6 +17,11 @@ inputs:
     required: true
     default: release
 
+  tag_format:
+    description: 'Format used to create tags'
+    required: true
+    default: 'v%major%.%minor%.%patch%'
+
   tag:
     description: 'Tag to use'
     required: false
@@ -32,3 +37,4 @@ runs:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
     - ${{ inputs.tag }}
+    - ${{ inputs.tag_format }}
