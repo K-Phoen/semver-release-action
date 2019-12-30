@@ -3,6 +3,7 @@ package semver
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 
 	version "github.com/blang/semver"
@@ -51,6 +52,16 @@ func (v Version) bump(inc Increment) Version {
 
 func (v Version) String() string {
 	return fmt.Sprintf("v%d.%d.%d", v.major, v.minor, v.patch)
+}
+
+func (v Version) format(format string) string {
+	formatted := format
+
+	formatted = strings.ReplaceAll(formatted, "%major%", strconv.FormatUint(v.major, 10))
+	formatted = strings.ReplaceAll(formatted, "%minor%", strconv.FormatUint(v.minor, 10))
+	formatted = strings.ReplaceAll(formatted, "%patch%", strconv.FormatUint(v.patch, 10))
+
+	return formatted
 }
 
 func ParseVersion(input string) (Version, error) {

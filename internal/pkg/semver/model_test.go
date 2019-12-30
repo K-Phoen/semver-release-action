@@ -42,6 +42,25 @@ func TestVersionBump(t *testing.T) {
 	}
 }
 
+func TestFormat(t *testing.T) {
+	cases := []struct {
+		version Version
+		format  string
+
+		expectedVersion string
+	}{
+		{
+			version:         Version{major: 1, minor: 2, patch: 3},
+			format:          "v%major%.%minor%.%patch%-RC",
+			expectedVersion: "v1.2.3-RC",
+		},
+	}
+
+	for _, testCase := range cases {
+		require.Equal(t, testCase.expectedVersion, testCase.version.format(testCase.format))
+	}
+}
+
 func TestParseIncrement(t *testing.T) {
 	cases := []struct {
 		input string

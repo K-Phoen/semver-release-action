@@ -12,7 +12,7 @@ fi
 RELEASE_BRANCH="$1"
 RELEASE_STRATEGY="$2"
 NEXT_TAG="$3"
-
+TAG_FORMAT="$4"
 
 echo ::Executing bumper guard ::debug release_branch=${RELEASE_BRANCH},github_event_path=${GITHUB_EVENT_PATH}
 /bumper guard "${RELEASE_BRANCH}" "${GITHUB_EVENT_PATH}"
@@ -31,7 +31,7 @@ then
     INCREMENT=$(/bumper increment "${GITHUB_EVENT_PATH}")
 
     echo ::debug ::Executing bumper semver latest_tag=${LATEST_TAG},increment=${INCREMENT}
-    NEXT_TAG=$(/bumper semver "${LATEST_TAG}" "${INCREMENT}")
+    NEXT_TAG=$(/bumper semver "${LATEST_TAG}" "${INCREMENT}" "${TAG_FORMAT}")
 fi
 
 echo ::debug ::Executing bumper release github_repository=${GITHUB_REPOSITORY},github_sha=${GITHUB_SHA},next_tag=${NEXT_TAG},strategy=${RELEASE_STRATEGY}
