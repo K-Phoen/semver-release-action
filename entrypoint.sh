@@ -1,6 +1,5 @@
 #!/bin/sh -l
 
-set -e
 set -u
 
 if [ -z "${GITHUB_TOKEN}" ]
