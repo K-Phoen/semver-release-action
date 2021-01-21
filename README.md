@@ -22,6 +22,10 @@ additional setup is required.
 release ; `tag`: creates a lightweight tag ; `none`: computes the next
 [SemVer](https://semver.org/) version but does not create a release or tag).
 
+### `default_increment`
+
+**Required** Default increment (skip/patch/minor/major). Default `"skip"`.
+
 ### `tag_format`
 
 **Optional** Format used to create tags. Default `"v%major%.%minor%.%patch%"`.
