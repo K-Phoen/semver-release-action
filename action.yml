@@ -17,6 +17,11 @@ inputs:
     required: true
     default: release
 
+  default_increment:
+    description: 'Default increment (skip/patch/minor/major)'
+    required: true
+    default: skip
+
   tag_format:
     description: 'Format used to create tags'
     required: true
@@ -38,3 +43,4 @@ runs:
     - ${{ inputs.release_strategy }}
     - ${{ inputs.tag }}
     - ${{ inputs.tag_format }}
+    - ${{ inputs.default_increment }}

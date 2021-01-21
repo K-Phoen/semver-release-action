@@ -20,8 +20,8 @@ func GuardCommand() *cobra.Command {
 
 func IncrementCommand() *cobra.Command {
 	return &cobra.Command{
-		Use:  "increment [GH_EVENT_PATH]",
-		Args: cobra.ExactArgs(1),
+		Use:  "increment [DEFAULT_INCREMENT] [GH_EVENT_PATH]",
+		Args: cobra.ExactArgs(2),
 		Run:  executeIncrement,
 	}
 }
@@ -58,11 +58,17 @@ func executeGuard(cmd *cobra.Command, args []string) {
 }
 
 func executeIncrement(cmd *cobra.Command, args []string) {
-	event := parseEvent(cmd, args[0])
+	defaultIncrementArg := args[0]
+	event := parseEvent(cmd, args[1])
+
+	defaultIncrement, err := semver.ParseIncrement(defaultIncrementArg)
+	if err != nil {
+		action.Fail(cmd, "no valid default_increment found")
+	}
 
 	increment, found := extractIncrement(cmd, event.PullRequest)
 	if !found {
-		action.Fail(cmd, "no valid semver label found")
+		increment = defaultIncrement
 	}
 
 	cmd.Print(increment)

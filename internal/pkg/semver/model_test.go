@@ -16,6 +16,12 @@ func TestVersionBump(t *testing.T) {
 		expectedVersion string
 	}{
 		{
+			name:            "skip bump",
+			version:         Version{major: 1, minor: 2, patch: 3},
+			increment:       IncrementSkip,
+			expectedVersion: "v1.2.3",
+		},
+		{
 			name:            "patch bump",
 			version:         Version{major: 1, minor: 2, patch: 3},
 			increment:       IncrementPatch,
@@ -68,6 +74,11 @@ func TestParseIncrement(t *testing.T) {
 		expectedIncrement Increment
 		expectedError     error
 	}{
+		{
+			input:             "skip",
+			expectedIncrement: IncrementSkip,
+			expectedError:     nil,
+		},
 		{
 			input:             "patch",
 			expectedIncrement: IncrementPatch,

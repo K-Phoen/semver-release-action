@@ -14,6 +14,7 @@ var ErrInvalidIncrement = errors.New("invalid increment")
 type Increment string
 
 const (
+	IncrementSkip  Increment = "skip"
 	IncrementPatch Increment = "patch"
 	IncrementMinor Increment = "minor"
 	IncrementMajor Increment = "major"
@@ -79,6 +80,8 @@ func ParseVersion(input string) (Version, error) {
 
 func ParseIncrement(inc string) (Increment, error) {
 	switch strings.ToLower(inc) {
+	case "skip":
+		return IncrementSkip, nil
 	case "patch":
 		return IncrementPatch, nil
 	case "minor":
