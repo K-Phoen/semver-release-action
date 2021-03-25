@@ -1,4 +1,11 @@
-# Semver Release Github Action ![](https://github.com/K-Phoen/semver-release-action/workflows/CI/badge.svg)
+
+# Semver Release Github Action ![badge](https://github.com/krogon/semver-release-action/workflows/CI/badge.svg)
+
+## Fork information
+
+Based on https://github.com/K-Phoen/semver-release-action
+
+## Description
 
 Automatically create [SemVer](https://semver.org/) compliant releases based on
 PR labels.
@@ -52,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Tag
-        uses: K-Phoen/semver-release-action@master
+        uses: krogon/semver-release-action@master
         with:
           release_branch: master
         env:

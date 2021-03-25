@@ -1,4 +1,4 @@
-IMAGE=kphoen/semver-release-action
+IMAGE=krogon/semver-release-action
 VERSION?=latest
 
 .PHONY: lint

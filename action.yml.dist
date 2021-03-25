@@ -1,6 +1,6 @@
 name: 'Semver Release'
 description: 'Automatically create Semver compliant tags or releases based on PR labels'
-author: 'Kévin Gomez'
+author: 'krogon'
 
 branding:
   icon: 'tag'
