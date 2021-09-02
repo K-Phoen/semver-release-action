@@ -45,7 +45,8 @@ name: Release
 
 on:
   pull_request:
-    types: closed
+    types:
+      - closed
 
 jobs:
   build:
