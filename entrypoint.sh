@@ -24,7 +24,7 @@ fi
 if [ -z "${NEXT_TAG}" ]
 then
     echo ::debug ::Executing bumper latest-tag github_repository=${GITHUB_REPOSITORY}
-    LATEST_TAG=$(/bumper latest-tag "${GITHUB_REPOSITORY}" "${GITHUB_TOKEN}")
+    LATEST_TAG=$(/bumper latest-tag "${GITHUB_REPOSITORY}" "${GITHUB_TOKEN}" "${TAG_FORMAT}")
 
     echo ::debug ::Executing bumper increment github_event_path=${GITHUB_EVENT_PATH}
     INCREMENT=$(/bumper increment "${GITHUB_EVENT_PATH}")
