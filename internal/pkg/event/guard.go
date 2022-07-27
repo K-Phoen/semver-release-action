@@ -51,8 +51,8 @@ func executeGuard(cmd *cobra.Command, args []string) {
 		)
 	}
 
-	_, incrementFound := extractIncrement(cmd, event.PullRequest)
-	if !incrementFound {
+	_, success := extractIncrement(cmd, event.PullRequest)
+	if !success {
 		action.Skip(cmd, "no valid semver label found")
 	}
 }
@@ -60,8 +60,8 @@ func executeGuard(cmd *cobra.Command, args []string) {
 func executeIncrement(cmd *cobra.Command, args []string) {
 	event := parseEvent(cmd, args[0])
 
-	increment, found := extractIncrement(cmd, event.PullRequest)
-	if !found {
+	increment, success := extractIncrement(cmd, event.PullRequest)
+	if !success {
 		action.Fail(cmd, "no valid semver label found")
 	}
 
@@ -69,8 +69,11 @@ func executeIncrement(cmd *cobra.Command, args []string) {
 }
 
 func extractIncrement(cmd *cobra.Command, pr *github.PullRequest) (semver.Increment, bool) {
-	validLabelFound := false
+	success := false
 	increment := semver.IncrementPatch
+	if len(pr.Labels) == 0 {
+		success = true
+	}
 	for _, label := range pr.Labels {
 		if label.Name == nil {
 			continue
@@ -82,15 +85,15 @@ func extractIncrement(cmd *cobra.Command, pr *github.PullRequest) (semver.Increm
 		}
 
 		// we already found one valid label: something is fishy.
-		if validLabelFound {
+		if success {
 			action.Fail(cmd, "several valid semver label found")
 		}
 
-		validLabelFound = true
+		success = true
 		increment = inc
 	}
 
-	return increment, validLabelFound
+	return increment, success
 }
 
 func parseEvent(cmd *cobra.Command, filePath string) *github.PullRequestEvent {
