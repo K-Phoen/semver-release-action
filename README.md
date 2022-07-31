@@ -50,6 +50,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged
+    
     steps:
       - name: Tag
         uses: K-Phoen/semver-release-action@master
