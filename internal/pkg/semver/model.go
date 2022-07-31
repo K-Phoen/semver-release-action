@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	version "github.com/blang/semver"
+	version "github.com/blang/semver/v4"
 )
 
 var ErrInvalidIncrement = errors.New("invalid increment")

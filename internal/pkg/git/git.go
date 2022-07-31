@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/K-Phoen/semver-release-action/internal/pkg/action"
-	"github.com/blang/semver"
-	"github.com/google/go-github/github"
+	"github.com/blang/semver/v4"
+	"github.com/google/go-github/v45/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
 )
@@ -33,8 +33,8 @@ func executeLatestTag(cmd *cobra.Command, args []string) {
 	owner := parts[0]
 	repo := parts[1]
 
-	refs, response, err := client.Git.ListRefs(ctx, owner, repo, &github.ReferenceListOptions{
-		Type: "tag",
+	refs, response, err := client.Git.ListMatchingRefs(ctx, owner, repo, &github.ReferenceListOptions{
+		Ref: "tags",
 	})
 	if response != nil && response.StatusCode == http.StatusNotFound {
 		cmd.Print("v0.0.0")
