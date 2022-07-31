@@ -6,7 +6,11 @@ on:
 
 jobs:
   build:
+    name: Build and release
     runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged
+
     steps:
       - name: Compute next SemVer tag
         id: semver
@@ -19,7 +23,7 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          with: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.base_ref }}
 
       - run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u kphoen --password-stdin
