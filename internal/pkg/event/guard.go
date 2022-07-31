@@ -6,7 +6,7 @@ import (
 
 	"github.com/K-Phoen/semver-release-action/internal/pkg/action"
 	"github.com/K-Phoen/semver-release-action/internal/pkg/semver"
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v45/github"
 	"github.com/spf13/cobra"
 )
 

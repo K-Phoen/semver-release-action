@@ -2,7 +2,7 @@ name: Release
 
 on:
   pull_request:
-    types: closed
+    types: [closed]
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.base_ref }}
 
