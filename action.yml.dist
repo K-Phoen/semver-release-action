@@ -26,6 +26,10 @@ inputs:
     description: 'Tag to use'
     required: false
 
+  default_increment:
+    description: 'Default increment to use'
+    required: false
+
 outputs:
   tag:
     description: 'The newly created tag'

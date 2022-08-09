@@ -31,6 +31,10 @@ release ; `tag`: creates a lightweight tag ; `none`: computes the next
 **Optional** Tag to use. If left undefined, it will be computed using the tags
 already present in the repository.
 
+### `default_increment`
+
+**Optional** Default increment, if no valid labels found.
+
 ## Outputs
 
 ### `tag`

@@ -12,9 +12,10 @@ RELEASE_BRANCH="$1"
 RELEASE_STRATEGY="$2"
 NEXT_TAG="$3"
 TAG_FORMAT="$4"
+DEFAULT_INCREMENT="$5"
 
 echo ::Executing bumper guard ::debug release_branch=${RELEASE_BRANCH},github_event_path=${GITHUB_EVENT_PATH}
-/bumper guard "${RELEASE_BRANCH}" "${GITHUB_EVENT_PATH}"
+/bumper guard "${RELEASE_BRANCH}" "${GITHUB_EVENT_PATH}" "${DEFAULT_INCREMENT}"
 if [ $? -eq 78 ]
 then
     echo ::debug ::Guard returned a neutral code, stopping the execution.
@@ -27,7 +28,7 @@ then
     LATEST_TAG=$(/bumper latest-tag "${GITHUB_REPOSITORY}" "${GITHUB_TOKEN}")
 
     echo ::debug ::Executing bumper increment github_event_path=${GITHUB_EVENT_PATH}
-    INCREMENT=$(/bumper increment "${GITHUB_EVENT_PATH}")
+    INCREMENT=$(/bumper increment "${GITHUB_EVENT_PATH}" "{DEFAULT_INCREMENT}")
 
     echo ::debug ::Executing bumper semver latest_tag=${LATEST_TAG},increment=${INCREMENT}
     NEXT_TAG=$(/bumper semver "${LATEST_TAG}" "${INCREMENT}" "${TAG_FORMAT}")
