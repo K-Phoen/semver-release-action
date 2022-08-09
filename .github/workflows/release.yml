@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           ref: ${{ github.base_ref }}
 
-      - run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u kphoen --password-stdin
+      - run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u kphoen --password-stdin
 
       - name: Push docker image
         run: make push

@@ -36,9 +36,10 @@ outputs:
 
 runs:
   using: 'docker'
-  image: 'docker://kphoen/semver-release-action:**VERSION_PLACEHOLDER**'
+  image: 'docker://ghcr.io/adamantal/semver-release-action:**VERSION_PLACEHOLDER**'
   args:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
     - ${{ inputs.tag }}
     - ${{ inputs.tag_format }}
+    - ${{ inputs.default_increment }}
