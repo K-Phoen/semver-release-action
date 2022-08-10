@@ -28,7 +28,7 @@ then
     LATEST_TAG=$(/bumper latest-tag "${GITHUB_REPOSITORY}" "${GITHUB_TOKEN}")
 
     echo ::debug ::Executing bumper increment github_event_path=${GITHUB_EVENT_PATH}
-    INCREMENT=$(/bumper increment "${GITHUB_EVENT_PATH}" "{DEFAULT_INCREMENT}")
+    INCREMENT=$(/bumper increment "${GITHUB_EVENT_PATH}" "${DEFAULT_INCREMENT}")
 
     echo ::debug ::Executing bumper semver latest_tag=${LATEST_TAG},increment=${INCREMENT}
     NEXT_TAG=$(/bumper semver "${LATEST_TAG}" "${INCREMENT}" "${TAG_FORMAT}")
