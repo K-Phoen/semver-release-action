@@ -70,7 +70,7 @@ func executeIncrement(cmd *cobra.Command, args []string) {
 		var err error
 		increment, err = semver.ParseIncrement(defaultIncrement)
 		if err != nil {
-			action.Fail(cmd, "failed to parse default increment")
+			action.Fail(cmd, "failed to parse default increment: "+err.Error())
 		}
 	}
 

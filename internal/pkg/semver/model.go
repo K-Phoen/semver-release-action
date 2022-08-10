@@ -11,6 +11,10 @@ import (
 
 var ErrInvalidIncrement = errors.New("invalid increment")
 
+func NewInvalidIncrementError(increment string) error {
+	return errors.New(fmt.Sprintf("invalid increment: %s", increment))
+}
+
 type Increment string
 
 const (
@@ -87,5 +91,5 @@ func ParseIncrement(inc string) (Increment, error) {
 		return IncrementMajor, nil
 	}
 
-	return IncrementPatch, ErrInvalidIncrement
+	return IncrementPatch, NewInvalidIncrementError(inc)
 }

@@ -102,7 +102,7 @@ func TestParseIncrement(t *testing.T) {
 		{
 			input:             "micro",
 			expectedIncrement: IncrementPatch,
-			expectedError:     ErrInvalidIncrement,
+			expectedError:     NewInvalidIncrementError("micro"),
 		},
 	}
 
