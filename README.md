@@ -63,6 +63,12 @@ jobs:
 
 ```
 
+## Require Permissions
+```
+permissions:
+  contents: write
+```
+
 ## License
 
 This library is under the [MIT](LICENSE.md) license.
