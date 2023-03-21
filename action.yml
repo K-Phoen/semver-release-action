@@ -16,6 +16,11 @@ inputs:
     description: 'Release strategy'
     required: true
     default: release
+  
+  generate_release_notes:
+    description: 'Auto generate release notes. Allowed values true, false'
+    required: true
+    default: 'false'
 
   tag_format:
     description: 'Format used to create tags'
@@ -38,3 +43,4 @@ runs:
     - ${{ inputs.release_strategy }}
     - ${{ inputs.tag }}
     - ${{ inputs.tag_format }}
+    - ${{ inputs.generate_release_notes }}

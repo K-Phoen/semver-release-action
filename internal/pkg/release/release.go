@@ -3,6 +3,7 @@ package release
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/K-Phoen/semver-release-action/internal/pkg/action"
@@ -24,14 +25,15 @@ type repository struct {
 type releaseDetails struct {
 	version string
 	target  string
+	autoReleaseNotes bool
 }
 
 func Command() *cobra.Command {
 	var releaseType string
 
 	cmd := &cobra.Command{
-		Use:  "release [REPOSITORY] [TARGET_COMMITISH] [VERSION] [GH_TOKEN]",
-		Args: cobra.ExactArgs(4),
+		Use:  "release [REPOSITORY] [TARGET_COMMITISH] [VERSION] [GH_TOKEN] [GENERATE_RELEASE_NOTES]",
+		Args: cobra.ExactArgs(5),
 		Run: func(cmd *cobra.Command, args []string) {
 			execute(cmd, releaseType, args)
 		},
@@ -44,6 +46,7 @@ func Command() *cobra.Command {
 
 func execute(cmd *cobra.Command, releaseType string, args []string) {
 	parts := strings.Split(args[0], "/")
+	autoReleaseNotes,_ := strconv.ParseBool(args[4])
 	repo := repository{
 		owner: parts[0],
 		name:  parts[1],
@@ -53,6 +56,7 @@ func execute(cmd *cobra.Command, releaseType string, args []string) {
 	release := releaseDetails{
 		version: args[2],
 		target:  args[1],
+		autoReleaseNotes: autoReleaseNotes,
 	}
 
 	ctx := context.Background()
@@ -96,6 +100,7 @@ func createGithubRelease(ctx context.Context, client *github.Client, repo reposi
 		TargetCommitish: &release.target,
 		Draft:           github.Bool(false),
 		Prerelease:      github.Bool(false),
+		GenerateReleaseNotes: github.Bool(release.autoReleaseNotes),
 	})
 
 	return err
