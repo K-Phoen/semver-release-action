@@ -8,6 +8,9 @@ jobs:
   build:
     name: Build and release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     if: github.event.pull_request.merged
 
