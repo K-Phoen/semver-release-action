@@ -1,4 +1,4 @@
-# Semver Release Github Action ![](https://github.com/cloud-crafts/semver-release-action/workflows/CI/badge.svg)
+# Semver Release GitHub Action ![](https://github.com/cloud-crafts/semver-release-action/workflows/CI/badge.svg)
 
 Automatically create [SemVer](https://semver.org/) compliant releases based on
 PR labels.
