@@ -26,15 +26,27 @@ inputs:
     description: 'Tag to use'
     required: false
 
+  base_host:
+    description: 'GitHub Enterprise Server base host'
+    required: false
+    default: 'api.github.com'
+
+  upload_host:
+    description: 'GitHub Enterprise Server upload host'
+    required: false
+    default: 'upload.github.com'
+
 outputs:
   tag:
     description: 'The newly created tag'
 
 runs:
   using: 'docker'
-  image: 'docker://kphoen/semver-release-action:v1.3.2'
+  image: 'docker://cloudcrafts/semver-release-action:v1.3.3'
   args:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
     - ${{ inputs.tag }}
     - ${{ inputs.tag_format }}
+    - ${{ inputs.base_host }}
+    - ${{ inputs.upload_host }}

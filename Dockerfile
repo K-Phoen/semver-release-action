@@ -1,5 +1,5 @@
 # Build
-FROM golang:1.18-alpine AS build
+FROM golang:1.21-alpine AS build
 
 RUN apk add --no-cache --update make \
     && rm -f /var/cache/apk/*

@@ -1,7 +1,7 @@
 package semver
 
 import (
-	"github.com/K-Phoen/semver-release-action/internal/pkg/action"
+	"github.com/cloud-crafts/semver-release-action/internal/pkg/action"
 	"github.com/spf13/cobra"
 )
 

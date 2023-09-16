@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/K-Phoen/semver-release-action/internal/pkg/action"
+	"github.com/cloud-crafts/semver-release-action/internal/pkg/action"
 	"github.com/google/go-github/v45/github"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
@@ -28,21 +28,27 @@ type releaseDetails struct {
 
 func Command() *cobra.Command {
 	var releaseType string
+	var githubServerBaseHostname string
+	var githubServerUploadBaseHostname string
 
 	cmd := &cobra.Command{
 		Use:  "release [REPOSITORY] [TARGET_COMMITISH] [VERSION] [GH_TOKEN]",
 		Args: cobra.ExactArgs(4),
 		Run: func(cmd *cobra.Command, args []string) {
-			execute(cmd, releaseType, args)
+			execute(cmd, releaseType, githubServerBaseHostname, githubServerUploadBaseHostname, args)
 		},
 	}
 
 	cmd.Flags().StringVarP(&releaseType, "strategy", "s", releaseTypeRelease, "Release strategy")
+	cmd.PersistentFlags().StringVarP(&githubServerBaseHostname, "baseHost", "b", "",
+		"GitHub Enterprise Server Base Host.")
+	cmd.PersistentFlags().StringVarP(&githubServerUploadBaseHostname, "uploadHost", "u", "",
+		"GitHub Enterprise Server Upload Host.")
 
 	return cmd
 }
 
-func execute(cmd *cobra.Command, releaseType string, args []string) {
+func execute(cmd *cobra.Command, releaseType, githubServerBaseHostname, githubServerUploadBaseHostname string, args []string) {
 	parts := strings.Split(args[0], "/")
 	repo := repository{
 		owner: parts[0],
@@ -58,7 +64,12 @@ func execute(cmd *cobra.Command, releaseType string, args []string) {
 	ctx := context.Background()
 
 	tokenSource := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: repo.token})
-	client := github.NewClient(oauth2.NewClient(ctx, tokenSource))
+	client, err := github.NewEnterpriseClient(fmt.Sprintf("https://%s/", githubServerBaseHostname),
+		fmt.Sprintf("https://%s/", githubServerUploadBaseHostname), oauth2.NewClient(ctx, tokenSource))
+	if err != nil {
+		cmd.Print(fmt.Errorf("github server client could not be created: %w", err))
+		return
+	}
 
 	switch releaseType {
 	case releaseTypeNone:

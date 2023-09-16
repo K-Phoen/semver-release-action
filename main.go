@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"github.com/K-Phoen/semver-release-action/internal/pkg/event"
-	"github.com/K-Phoen/semver-release-action/internal/pkg/git"
-	"github.com/K-Phoen/semver-release-action/internal/pkg/release"
-	"github.com/K-Phoen/semver-release-action/internal/pkg/semver"
+	"github.com/cloud-crafts/semver-release-action/internal/pkg/event"
+	"github.com/cloud-crafts/semver-release-action/internal/pkg/git"
+	"github.com/cloud-crafts/semver-release-action/internal/pkg/release"
+	"github.com/cloud-crafts/semver-release-action/internal/pkg/semver"
 	"github.com/spf13/cobra"
 )
 

@@ -44,7 +44,7 @@ jobs:
 
       - name: Create release
         id: tag
-        uses: K-Phoen/semver-release-action@master
+        uses: cloud-crafts/semver-release-action@master
         with:
           release_branch: master
           tag: ${{ steps.semver.outputs.tag }}
