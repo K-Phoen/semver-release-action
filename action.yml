@@ -29,12 +29,11 @@ inputs:
   base_host:
     description: 'GitHub Enterprise Server base host'
     required: false
-    default: 'api.github.com'
+    default:
 
   upload_host:
-    description: 'GitHub Enterprise Server upload host'
-    required: false
-    default: 'upload.github.com'
+      description: 'GitHub Enterprise Server upload host'
+      required: false
 
 outputs:
   tag:
@@ -42,7 +41,7 @@ outputs:
 
 runs:
   using: 'docker'
-  image: 'docker://cloudcrafts/semver-release-action:v1.3.3'
+  image: 'docker://cloudcrafts/semver-release-action:v1.4.0'
   args:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
