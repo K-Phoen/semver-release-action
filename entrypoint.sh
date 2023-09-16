@@ -26,13 +26,13 @@ fi
 if [ -z "${NEXT_TAG}" ]
 then
     echo ::debug ::Executing bumper latest-tag github_repository=${GITHUB_REPOSITORY}
-    LATEST_TAG=$(/bumper latest-tag "${GITHUB_REPOSITORY}" "${GITHUB_TOKEN}")
+    LATEST_TAG=$(/bumper latest-tag "${GITHUB_REPOSITORY}" "${GITHUB_TOKEN}" --baseHost "${GITHUB_BASE_HOST}" --uploadHost "${GITHUB_UPLOAD_HOST}")
 
     echo ::debug ::Executing bumper increment github_event_path=${GITHUB_EVENT_PATH}
     INCREMENT=$(/bumper increment "${GITHUB_EVENT_PATH}")
 
     echo ::debug ::Executing bumper semver latest_tag=${LATEST_TAG},increment=${INCREMENT}
-    NEXT_TAG=$(/bumper semver "${LATEST_TAG}" "${INCREMENT}" "${TAG_FORMAT}" --baseHost "${GITHUB_BASE_HOST}" --uploadHost "${GITHUB_UPLOAD_HOST}")
+    NEXT_TAG=$(/bumper semver "${LATEST_TAG}" "${INCREMENT}" "${TAG_FORMAT}")
 fi
 
 echo ::debug ::Executing bumper release github_repository=${GITHUB_REPOSITORY},github_sha=${GITHUB_SHA},next_tag=${NEXT_TAG},strategy=${RELEASE_STRATEGY},github_base_host=${GITHUB_BASE_HOST},github_upload_host=${GITHUB_UPLOAD_HOST}

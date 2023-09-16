@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.base_ref }}
 
-      - run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u kphoen --password-stdin
+      - run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u cloudcrafts --password-stdin
 
       - name: Push docker image
         run: make push
