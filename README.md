@@ -31,6 +31,14 @@ release ; `tag`: creates a lightweight tag ; `none`: computes the next
 **Optional** Tag to use. If left undefined, it will be computed using the tags
 already present in the repository.
 
+### `base_host`
+
+**Optional** GitHub Enterprise server base host name. Example: `api.github.com`
+
+### `upload_host`
+
+**Optional** GitHub Enterprise server upload host name. Example: `upload.github.com`
+
 ## Outputs
 
 ### `tag`
