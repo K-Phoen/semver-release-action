@@ -1,7 +1,6 @@
 # Semver Release GitHub Action ![](https://github.com/cloud-crafts/semver-release-action/workflows/CI/badge.svg)
 
-Automatically create [SemVer](https://semver.org/) compliant releases based on
-PR labels.
+Automatically create [SemVer](https://semver.org/) compliant releases based on PR labels.
 
 Assuming that a PR is tagged with a "*semver-compliant*" label (*patch*, *minor* or *major*),
 then this action can create a tag and a GitHub release when it is merged.
