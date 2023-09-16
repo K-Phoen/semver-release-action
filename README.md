@@ -1,4 +1,4 @@
-# Semver Release Github Action ![](https://github.com/K-Phoen/semver-release-action/workflows/CI/badge.svg)
+# Semver Release Github Action ![](https://github.com/cloud-crafts/semver-release-action/workflows/CI/badge.svg)
 
 Automatically create [SemVer](https://semver.org/) compliant releases based on
 PR labels.
@@ -63,7 +63,7 @@ jobs:
     
     steps:
       - name: Tag
-        uses: K-Phoen/semver-release-action@master
+        uses: cloud-crafts/semver-release-action@master
         with:
           release_branch: master
         env:

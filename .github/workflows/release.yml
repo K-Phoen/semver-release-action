@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Compute next SemVer tag
         id: semver
-        uses: K-Phoen/semver-release-action@master
+        uses: cloud-crafts/semver-release-action@master
         with:
           release_branch: master
           release_strategy: none
