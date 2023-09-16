@@ -19,11 +19,11 @@ jobs:
           release_branch: master
           release_strategy: none
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.base_ref }}
 
       - run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u kphoen --password-stdin
@@ -49,4 +49,4 @@ jobs:
           release_branch: master
           tag: ${{ steps.semver.outputs.tag }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
