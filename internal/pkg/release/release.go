@@ -96,6 +96,7 @@ func createGithubRelease(ctx context.Context, client *github.Client, repo reposi
 		TargetCommitish: &release.target,
 		Draft:           github.Bool(false),
 		Prerelease:      github.Bool(false),
+		GenerateReleaseNotes: github.Bool(true),
 	})
 
 	return err
