@@ -2,19 +2,19 @@ name: CI
 on: [pull_request]
 
 jobs:
-  # lint:
-  #   name: Linters
-  #   runs-on: ubuntu-latest
+  lint:
+    name: Linters
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - name: golangci-lint
-  #       uses: reviewdog/action-golangci-lint@v2
-  #       with:
-  #         go_version: '1.18'
-  #         golangci_lint_flags: '-c .golangci.yaml'
-  #         reporter: github-pr-review
+      - name: golangci-lint
+        uses: reviewdog/action-golangci-lint@v2
+        with:
+          go_version: '1.18'
+          golangci_lint_flags: '-c .golangci.yaml'
+          reporter: github-pr-review
 
   tests:
     name: Tests
