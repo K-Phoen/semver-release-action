@@ -32,7 +32,7 @@ outputs:
 
 runs:
   using: 'docker'
-  image: 'docker://neebs/semver-release-action:latest'
+  image: 'docker://hnrynz/semver-release-action:latest'
   args:
     - ${{ inputs.release_branch }}
     - ${{ inputs.release_strategy }}
