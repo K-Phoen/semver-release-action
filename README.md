@@ -1,4 +1,46 @@
-# Semver Release Github Action ![](https://github.com/K-Phoen/semver-release-action/workflows/CI/badge.svg)
+# Internal Use: Hnry-Semver-Release
+
+## How we can use this internally
+
+Since this is being used via a private registry. This action is being executed manually so that docker authentication can occur prior to image pull. This is how you manually implement this (see [example implementation](https://github.com/HnryNZ/hnry-rails/blob/master/.github/workflows/auto-releaser.yml#L36))
+
+```yaml
+generate_release:
+  name: Generate Release
+  runs-on: ubuntu-latest
+  container:
+    image: hnrynz/semver-release-action:latest
+    credentials:
+      username: ${{ secrets.DOCKER_USER }}
+      password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+  needs: [suspend_release]
+  if: github.event.pull_request.merged
+
+  steps:
+    - name: Run Action
+      run: |
+        # manual execution of the action
+        chmod +x /entrypoint.sh
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+        /entrypoint.sh "master" "release" "" "%major%.%minor%.%patch%"
+```
+
+This is what you need:
+
+- Docker Credentials: `${{ secrets.DOCKER_USER }}` & `${{ secrets.DOCKER_ACCESS_TOKEN }}`
+- The trunk branch name needs to be consistent with script call `/entrypoint.sh "master" ...`
+
+## How to roll in your changes to main
+
+What you need:
+
+1. Merge your changes to `main`
+2. Build the image `docker build -t hnrynz/semver-release-action:latest .`
+3. Push the image `docker push hnrynz/semver-release-action:latest`
+4. Since this is a `:latest` tag, this should be **automatically** rolled in to any workflow pulling this image 👌
+
+
+<!-- # Semver Release Github Action ![](https://github.com/K-Phoen/semver-release-action/workflows/CI/badge.svg)
 
 Automatically create [SemVer](https://semver.org/) compliant releases based on
 PR labels.
@@ -52,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
 
     if: github.event.pull_request.merged
-    
+
     steps:
       - name: Tag
         uses: K-Phoen/semver-release-action@master
@@ -65,4 +107,4 @@ jobs:
 
 ## License
 
-This library is under the [MIT](LICENSE.md) license.
+This library is under the [MIT](LICENSE.md) license. -->
